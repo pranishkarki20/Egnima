@@ -1,4 +1,5 @@
-﻿Django>=5.2,<7.0
+Django>=5.2,<7.0
 gunicorn>=23.0,<24.0
 pymongo[srv]>=4.6,<5.0
 python-dotenv>=1.0,<2.0
+django-cors-headers>=4.7,<5.0

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -28,7 +29,9 @@ SECRET_KEY = 'django-insecure-llvovvjtcvi*x^-t&eq)m1b=$6hj*$*&&5*hoowb^_fmt*@=1i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['egneema.onrender.com']
+
+CORS_ALLOWED_ORIGINS = [os.getenv('FRONTEND_ORIGIN', 'https://egnima-drab.vercel.app'), 'http://localhost:8080']
 
 # Allow the image endpoint to receive files up to its 5 MB validation limit.
 DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024
@@ -43,11 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
