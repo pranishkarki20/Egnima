@@ -30,3 +30,8 @@ dist-ssr
 # Backend secrets
 backend/.env
 
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+

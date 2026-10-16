@@ -89,7 +89,6 @@ const Navigation = () => {
     ))}
     <Link to="/admin" className="font-code text-[10px] tracking-widest text-primary/70 hover:text-primary">ADMIN</Link>
     
-    {/* NOTES.LIB REMOVED */}
   </div>
 </div>
             {/* Mobile Menu Button */}

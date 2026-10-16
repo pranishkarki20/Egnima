@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+﻿import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
@@ -9,6 +9,22 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     proxy: {
+      "/api/admin": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/api/uploads": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/api/team": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
+      "/api/events": {
+        target: "http://localhost:8000",
+        changeOrigin: true,
+      },
       "/api": {
         target: "http://localhost:8787",
         changeOrigin: true,
@@ -23,3 +39,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
 }));
+
+
+

@@ -1,20 +1,17 @@
-﻿import { Lightbulb, Trophy, Users } from "lucide-react";
+import { Lightbulb, Trophy, Users } from "lucide-react";
 
 const capabilities = [
   {
-    number: "01",
     title: "TECH INNOVATION",
     description: "Fostering creative solutions and cutting-edge technological advancement in a raw technical environment.",
     icon: Lightbulb,
   },
   {
-    number: "02",
     title: "CORE COMMUNITY",
     description: "Building a collaborative network of passionate tech enthusiasts and technical rebels.",
     icon: Users,
   },
   {
-    number: "03",
     title: "MISSION EXCELLENCE",
     description: "Striving for technical mastery and professional development through rigorous missions.",
     icon: Trophy,
@@ -25,8 +22,8 @@ export default function About() {
   return (
     <section className="about-dossier section-pad" id="about" aria-labelledby="about-title">
       <div className="page-wrap about-layout">
-        <aside className="about-rail" aria-label="Section 01: Who we are">
-          <span className="about-rail-number">01 /</span>
+        <aside className="about-rail" aria-label="Who we are">
+          
           <span className="about-rail-label">WHO WE ARE</span>
         </aside>
 
@@ -45,9 +42,9 @@ export default function About() {
           </div>
 
           <div className="about-capabilities">
-            {capabilities.map(({ number, title, description, icon: Icon }) => (
-              <article className="about-card" key={number}>
-                <span className="about-card-number" aria-hidden="true">{number}</span>
+            {capabilities.map(({ title, description, icon: Icon }) => (
+              <article className="about-card" key={title}>
+                
                 <span className="about-card-rule" aria-hidden="true" />
                 <Icon className="about-card-icon" size={20} strokeWidth={1.5} aria-hidden="true" />
                 <h3>{title}</h3>
@@ -59,7 +56,7 @@ export default function About() {
           <div className="about-mission">
             <span className="about-mission-label">MISSION.LOG</span>
             <p>To empower students with the knowledge and community needed to excel in technical innovation.</p>
-            <span className="about-mission-mark" aria-hidden="true">EN / 01</span>
+            
           </div>
         </div>
       </div>

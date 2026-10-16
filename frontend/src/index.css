@@ -1,4 +1,4 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -6,29 +6,29 @@
 @layer base {
   :root {
     /* Acid Brutalism Palette */
-    --background: 0 0% 3%;
+    --background: 264 34% 8%;
     --foreground: 0 0% 100%;
 
-    --card: 0 0% 7%;
+    --card: 264 28% 12%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 0 0% 7%;
+    --popover: 264 28% 12%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 46 72% 49%;
     --primary-foreground: 0 0% 3%;
 
-    --secondary: 0 0% 15%;
+    --secondary: 264 22% 19%;
     --secondary-foreground: 0 0% 100%;
 
     --accent: 46 72% 49%;
     --accent-foreground: 0 0% 3%;
 
-    --muted: 0 0% 12%;
+    --muted: 264 22% 16%;
     --muted-foreground: 0 0% 75%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
+    --border: 264 18% 23%;
+    --input: 264 18% 23%;
     --ring: 46 72% 49%;
 
     --radius: 0px;
@@ -45,7 +45,7 @@
   }
 
   .dark {
-    --background: 0 0% 3%;
+    --background: 264 34% 8%;
     --foreground: 0 0% 100%;
   }
 
@@ -184,7 +184,7 @@
   }
 }
 
-/* Hide Botpress default chat bubble â€” using custom button instead */
+/* Hide Botpress default chat bubble — using custom button instead */
 #bp-web-widget,
 .bpFab,
 [class*="bpFab"],
