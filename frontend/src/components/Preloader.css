@@ -1,0 +1,82 @@
+﻿.enigma-preloader {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 88% 12%, rgba(63, 47, 91, .25), transparent 37%), #030205;
+  opacity: 1;
+  transition: opacity .6s ease;
+}
+
+.enigma-preloader.is-exiting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.enigma-preloader__mark {
+  width: 220px;
+  height: auto;
+  overflow: visible;
+}
+
+.enigma-preloader__outer {
+  fill: #12091f;
+  stroke: #e0c93f;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: enigma-outline-draw 2.4s cubic-bezier(.6, 0, .2, 1) .2s forwards;
+}
+
+.enigma-preloader__inner {
+  fill: none;
+  stroke: #3f2f5b;
+  stroke-width: 10;
+  stroke-linejoin: round;
+  opacity: 0;
+  animation: enigma-inner-reveal .55s ease 1.6s forwards;
+}
+
+.enigma-preloader__word {
+  fill: #e0c93f;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: enigma-word-reveal .55s ease 2s forwards;
+}
+
+@keyframes enigma-outline-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes enigma-inner-reveal {
+  to { opacity: 1; }
+}
+
+@keyframes enigma-word-reveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (min-width: 768px) {
+  .enigma-preloader__mark { width: 280px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enigma-preloader,
+  .enigma-preloader__outer,
+  .enigma-preloader__inner,
+  .enigma-preloader__word {
+    animation: none;
+  }
+
+  .enigma-preloader { transition-duration: .6s; }
+  .enigma-preloader__outer { stroke-dashoffset: 0; }
+  .enigma-preloader__inner,
+  .enigma-preloader__word { opacity: 1; }
+}

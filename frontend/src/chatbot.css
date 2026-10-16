@@ -1,0 +1,283 @@
+/* =============================================================
+   ENIGMA × BOTPRESS — Acid Brutalism Chatbot Skin
+   Theme: #D5FF40 / #080808 / 0px radius / Sharp Technical
+   Target: Botpress Webchat v3.6 (inject.js)
+   ============================================================= */
+
+/* ------------------------------------------------------------------
+   1. BOTPRESS CSS VARIABLE OVERRIDES
+   Botpress exposes these on :root for global theming
+   ------------------------------------------------------------------ */
+:root {
+  /* Brand */
+  --bp-color-primary:           #D5FF40;
+  --bp-color-primary-dark:      #b8e020;
+  --bp-color-secondary:         #121212;
+
+  /* Surfaces */
+  --bp-color-background:        #080808;
+  --bp-color-surface:           #121212;
+  --bp-color-surface-alt:       #1a1a1a;
+
+  /* Text */
+  --bp-color-text:              #ffffff;
+  --bp-color-text-secondary:    #C0C2B8;
+  --bp-color-text-disabled:     #555555;
+
+  /* Borders */
+  --bp-color-border:            #D5FF4033;
+  --bp-color-border-focus:      #D5FF40;
+
+  /* Messages */
+  --bp-color-bot-message-bg:    #121212;
+  --bp-color-bot-message-text:  #ffffff;
+  --bp-color-user-message-bg:   #D5FF40;
+  --bp-color-user-message-text: #080808;
+
+  /* Radius — 0px = Brutalist sharp edges */
+  --bp-border-radius:           0px;
+  --bp-border-radius-message:   0px;
+  --bp-border-radius-input:     0px;
+  --bp-border-radius-button:    0px;
+
+  /* Typography */
+  --bp-font-family:             'Poppins', sans-serif;
+  --bp-font-size-base:          0.875rem;
+
+  /* Header */
+  --bp-header-bg:               #D5FF40;
+  --bp-header-text:             #080808;
+
+  /* Input */
+  --bp-input-bg:                #121212;
+  --bp-input-border:            #D5FF4055;
+  --bp-input-focus-border:      #D5FF40;
+  --bp-input-text:              #ffffff;
+  --bp-input-placeholder:       #555555;
+
+  /* Send button */
+  --bp-send-button-bg:          #D5FF40;
+  --bp-send-button-color:       #080808;
+  --bp-send-button-hover-bg:    #b8e020;
+
+  /* Scrollbar */
+  --bp-scrollbar-thumb:         #D5FF4033;
+  --bp-scrollbar-track:         #080808;
+
+  /* Shadow / Glow */
+  --bp-widget-shadow:           0 0 40px rgba(213, 255, 64, 0.15),
+                                0 0 0 1px #D5FF4033;
+}
+
+/* ------------------------------------------------------------------
+   2. WIDGET CONTAINER — Glow + Sharp border
+   ------------------------------------------------------------------ */
+#bp-web-widget-container,
+[class*="webchat__"],
+[id*="bp-web-widget"] {
+  border-radius: 0 !important;
+  border: 1px solid #D5FF4033 !important;
+  box-shadow: 0 0 40px rgba(213, 255, 64, 0.12),
+              0 0 0 1px #D5FF4022 !important;
+  font-family: 'Poppins', sans-serif !important;
+  overflow: hidden !important;
+}
+
+/* ------------------------------------------------------------------
+   3. HEADER — Acid Green bar, black text, all-caps label
+   ------------------------------------------------------------------ */
+[class*="header"],
+[class*="Header"] {
+  background: #D5FF40 !important;
+  color: #080808 !important;
+  border-radius: 0 !important;
+  border-bottom: none !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* ------------------------------------------------------------------
+   4. MESSAGE BUBBLES
+   ------------------------------------------------------------------ */
+/* Bot messages — dark surface with acid border */
+[class*="bot-message"],
+[class*="botMessage"],
+[class*="from-bot"] {
+  background: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #D5FF4033 !important;
+  border-radius: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* User messages — full acid green */
+[class*="user-message"],
+[class*="userMessage"],
+[class*="from-user"] {
+  background: #D5FF40 !important;
+  color: #080808 !important;
+  border-radius: 0 !important;
+  font-weight: 600 !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* ------------------------------------------------------------------
+   5. INPUT AREA
+   ------------------------------------------------------------------ */
+[class*="composer"],
+[class*="Composer"],
+[class*="input-area"] {
+  background: #080808 !important;
+  border-top: 1px solid #D5FF4033 !important;
+}
+
+[class*="composer"] input,
+[class*="composer"] textarea,
+[class*="Composer"] input,
+[class*="Composer"] textarea {
+  background: #121212 !important;
+  color: #ffffff !important;
+  border: 1px solid #D5FF4033 !important;
+  border-radius: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+  outline: none !important;
+}
+
+[class*="composer"] input:focus,
+[class*="composer"] textarea:focus,
+[class*="Composer"] input:focus,
+[class*="Composer"] textarea:focus {
+  border-color: #D5FF40 !important;
+  box-shadow: 0 0 12px rgba(213, 255, 64, 0.2) !important;
+}
+
+[class*="composer"] input::placeholder,
+[class*="Composer"] input::placeholder {
+  color: #555555 !important;
+  text-transform: uppercase !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ------------------------------------------------------------------
+   6. SEND BUTTON — Acid Green → hover glow
+   ------------------------------------------------------------------ */
+[class*="send-button"],
+[class*="sendButton"],
+[class*="SendButton"] {
+  background: #D5FF40 !important;
+  color: #080808 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  font-weight: 800 !important;
+  transition: box-shadow 0.2s ease !important;
+}
+
+[class*="send-button"]:hover,
+[class*="sendButton"]:hover {
+  background: #b8e020 !important;
+  box-shadow: 0 0 16px rgba(213, 255, 64, 0.5) !important;
+}
+
+/* ------------------------------------------------------------------
+   7. QUICK REPLY / ACTION BUTTONS
+   ------------------------------------------------------------------ */
+[class*="quick-reply"],
+[class*="quickReply"],
+[class*="choice-button"],
+[class*="choiceButton"] {
+  background: transparent !important;
+  color: #D5FF40 !important;
+  border: 1px solid #D5FF40 !important;
+  border-radius: 0 !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  font-size: 0.75rem !important;
+  transition: background 0.15s ease !important;
+}
+
+[class*="quick-reply"]:hover,
+[class*="quickReply"]:hover,
+[class*="choice-button"]:hover {
+  background: #D5FF40 !important;
+  color: #080808 !important;
+  box-shadow: 0 0 12px rgba(213, 255, 64, 0.3) !important;
+}
+
+/* ------------------------------------------------------------------
+   8. SCROLLBAR — Brutalist minimal
+   ------------------------------------------------------------------ */
+[class*="messages"]::-webkit-scrollbar,
+[class*="conversation"]::-webkit-scrollbar {
+  width: 3px;
+}
+[class*="messages"]::-webkit-scrollbar-track,
+[class*="conversation"]::-webkit-scrollbar-track {
+  background: #080808;
+}
+[class*="messages"]::-webkit-scrollbar-thumb,
+[class*="conversation"]::-webkit-scrollbar-thumb {
+  background: #D5FF4044;
+}
+[class*="messages"]::-webkit-scrollbar-thumb:hover,
+[class*="conversation"]::-webkit-scrollbar-thumb:hover {
+  background: #D5FF4088;
+}
+
+/* ------------------------------------------------------------------
+   9. TIMESTAMPS & METADATA
+   ------------------------------------------------------------------ */
+[class*="timestamp"],
+[class*="Timestamp"],
+[class*="message-date"] {
+  color: #555555 !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 0.65rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ------------------------------------------------------------------
+   10. TYPING INDICATOR — Acid pulse
+   ------------------------------------------------------------------ */
+[class*="typing"],
+[class*="Typing"] {
+  background: #121212 !important;
+  border: 1px solid #D5FF4033 !important;
+  border-radius: 0 !important;
+}
+
+[class*="typing"] span,
+[class*="typing"] div {
+  background: #D5FF40 !important;
+}
+
+/* ------------------------------------------------------------------
+   11. LINKS inside bot messages
+   ------------------------------------------------------------------ */
+[class*="bot-message"] a,
+[class*="botMessage"] a {
+  color: #D5FF40 !important;
+  text-decoration: underline !important;
+  text-decoration-color: #D5FF4066 !important;
+}
+
+[class*="bot-message"] a:hover,
+[class*="botMessage"] a:hover {
+  text-decoration-color: #D5FF40 !important;
+  filter: drop-shadow(0 0 6px rgba(213, 255, 64, 0.5));
+}
+
+/* ------------------------------------------------------------------
+   12. ACCESSIBILITY — Respect reduced motion
+   ------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  [class*="bp"],
+  [class*="webchat"] {
+    transition: none !important;
+    animation: none !important;
+  }
+}
