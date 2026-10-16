@@ -1,3 +1,4 @@
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Code2, Cpu, Github, Instagram, Linkedin, Menu, ShieldCheck, Sparkles, Terminal, X } from "lucide-react";
@@ -60,8 +61,8 @@ function Index() {
   const [activeTeam, setActiveTeam] = useState("Core Team");
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
-    fetch("/api/events/").then(response => { if (!response.ok) throw new Error("Events unavailable"); return response.json(); }).then(data => setEvents(data.events || [])).catch(() => setEvents([]));
-    fetch("/api/team/").then(response => { if (!response.ok) throw new Error("Team roster unavailable"); return response.json(); }).then(data => setTeamMembers(data.members || [])).catch(() => { try { setTeamMembers(JSON.parse(localStorage.getItem("enigma-team-v1") || "[]")); } catch { setTeamMembers([]); } });
+    apiFetch("/api/events/").then(response => { if (!response.ok) throw new Error("Events unavailable"); return response.json(); }).then(data => setEvents(data.events || [])).catch(() => setEvents([]));
+    apiFetch("/api/team/").then(response => { if (!response.ok) throw new Error("Team roster unavailable"); return response.json(); }).then(data => setTeamMembers(data.members || [])).catch(() => { try { setTeamMembers(JSON.parse(localStorage.getItem("enigma-team-v1") || "[]")); } catch { setTeamMembers([]); } });
   }, []);
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;

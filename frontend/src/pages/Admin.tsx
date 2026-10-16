@@ -1,3 +1,4 @@
+import { apiFetch } from "@/lib/api";
 import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, CalendarDays, UsersRound, Plus, Trash2, Save, LogOut } from "lucide-react";
@@ -27,13 +28,13 @@ export default function Admin() {
   const [password, setPassword] = useState("");
   const [uploading, setUploading] = useState(false);
   useEffect(() => {
-    fetch("/api/events/").then(async r => { if (!r.ok) throw new Error("Could not load events from the server."); const data = await r.json(); setEvents(data.events || []); }).catch(error => setNotice(error.message));
-    fetch("/api/team/").then(async r => { if (!r.ok) throw new Error("Could not load the shared team roster."); const data = await r.json(); const shared = data.members || []; const initial = shared.length ? shared : read<TeamRecord>(TEAM_KEY); setMembers(initial); }).catch(() => { const current = read<TeamRecord>(TEAM_KEY); setMembers(current); });
+    apiFetch("/api/events/").then(async r => { if (!r.ok) throw new Error("Could not load events from the server."); const data = await r.json(); setEvents(data.events || []); }).catch(error => setNotice(error.message));
+    apiFetch("/api/team/").then(async r => { if (!r.ok) throw new Error("Could not load the shared team roster."); const data = await r.json(); const shared = data.members || []; const initial = shared.length ? shared : read<TeamRecord>(TEAM_KEY); setMembers(initial); }).catch(() => { const current = read<TeamRecord>(TEAM_KEY); setMembers(current); });
   }, []);
 
   const saveMembers = async (next: TeamRecord[]): Promise<boolean> => {
     try {
-      const response = await fetch("/api/team/", { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` }, body: JSON.stringify({ members: next }) });
+      const response = await apiFetch("/api/team/", { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` }, body: JSON.stringify({ members: next }) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || "Could not save team roster."); }
       setMembers(data.members); localStorage.setItem(TEAM_KEY, JSON.stringify(data.members)); setNotice("Team roster published for everyone to see."); return true;
@@ -42,19 +43,19 @@ export default function Admin() {
   const submitLogin = async (e: FormEvent) => {
     e.preventDefault(); setNotice("");
     try {
-      const response = await fetch("/api/admin/login/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username, password }) });
+      const response = await apiFetch("/api/admin/login/", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username, password }) });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Sign in failed.");
       setSessionToken(data.token); setPassword(""); setNotice("");
     } catch (error) { setNotice(error instanceof Error ? error.message : "Sign in failed."); }
   };
-  const submitEvent = async (e: FormEvent) => { e.preventDefault(); setNotice(""); try { const response = await fetch("/api/events/", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` }, body: JSON.stringify(event) }); const data = await response.json().catch(() => ({})); if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || `Could not publish event (HTTP ${response.status}).`); } setEvents(current => [...current, data.event].sort((a,b) => a.date.localeCompare(b.date))); setEvent(initialEvent); setNotice("Event published for everyone to see."); } catch (error) { setNotice(error instanceof Error ? error.message : "Could not publish event."); } };
+  const submitEvent = async (e: FormEvent) => { e.preventDefault(); setNotice(""); try { const response = await apiFetch("/api/events/", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${sessionToken}` }, body: JSON.stringify(event) }); const data = await response.json().catch(() => ({})); if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || `Could not publish event (HTTP ${response.status}).`); } setEvents(current => [...current, data.event].sort((a,b) => a.date.localeCompare(b.date))); setEvent(initialEvent); setNotice("Event published for everyone to see."); } catch (error) { setNotice(error instanceof Error ? error.message : "Could not publish event."); } };
   const uploadImage = async (file: File, setImage: (url: string) => void) => {
     if (file.size > 5 * 1024 * 1024) { setNotice("Choose an image that is 5 MB or smaller."); return; }
     setUploading(true); setNotice("");
     const formData = new FormData(); formData.append("image", file);
     try {
-      const response = await fetch("/api/admin/uploads/", { method: "POST", headers: { Authorization: `Bearer ${sessionToken}` }, body: formData });
+      const response = await apiFetch("/api/admin/uploads/", { method: "POST", headers: { Authorization: `Bearer ${sessionToken}` }, body: formData });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || `Image upload failed (HTTP ${response.status}).`); }
       setImage(data.url); setNotice("Image uploaded.");
@@ -113,7 +114,7 @@ export default function Admin() {
         <section className="border border-white/10 bg-white/[.025] p-5 md:p-7">
           <h2 className="mb-5 text-xl font-bold">{tab === "events" ? `Events (${events.length})` : `Roster (${members.length})`}</h2>
           <div className="space-y-3">
-            {tab === "events" ? events.map((item,i)=><article key={`${item.title}-${i}`} className="flex justify-between gap-4 border border-white/10 p-4"><div><h3 className="font-semibold">{item.title}</h3><p className="mt-1 text-xs text-muted-foreground">{item.date} · {item.location}</p></div><button aria-label={`Delete ${item.title}`} onClick={async()=>{ try { const response = await fetch(`/api/events/?id=${encodeURIComponent(item.id || "")}`, { method: "DELETE", headers: { Authorization: `Bearer ${sessionToken}` } }); const data = response.status === 204 ? {} : await response.json(); if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || "Could not delete event."); } setEvents(events.filter((_,j)=>j!==i)); setNotice("Event deleted."); } catch (error) { setNotice(error instanceof Error ? error.message : "Could not delete event."); } }} className="self-start p-2 text-muted-foreground hover:text-red-400"><Trash2 size={16}/></button></article>) : members.map((item,i)=><article key={`${item.name}-${i}`} className="flex items-center justify-between gap-4 border border-white/10 p-4"><div><h3 className="font-semibold">{item.name}</h3><p className="mt-1 text-xs text-primary">{item.role} · {item.department}</p></div><div className="flex gap-1"><button onClick={()=>edit(i)} className="px-3 py-2 text-xs text-primary hover:bg-primary/10">Edit</button><button aria-label={`Delete ${item.name}`} onClick={()=>saveMembers(members.filter((_,j)=>j!==i))} className="p-2 text-muted-foreground hover:text-red-400"><Trash2 size={16}/></button></div></article>)}
+            {tab === "events" ? events.map((item,i)=><article key={`${item.title}-${i}`} className="flex justify-between gap-4 border border-white/10 p-4"><div><h3 className="font-semibold">{item.title}</h3><p className="mt-1 text-xs text-muted-foreground">{item.date} · {item.location}</p></div><button aria-label={`Delete ${item.title}`} onClick={async()=>{ try { const response = await apiFetch(`/api/events/?id=${encodeURIComponent(item.id || "")}`, { method: "DELETE", headers: { Authorization: `Bearer ${sessionToken}` } }); const data = response.status === 204 ? {} : await response.json(); if (!response.ok) { if (response.status === 401) setSessionToken(""); throw new Error(data.error || "Could not delete event."); } setEvents(events.filter((_,j)=>j!==i)); setNotice("Event deleted."); } catch (error) { setNotice(error instanceof Error ? error.message : "Could not delete event."); } }} className="self-start p-2 text-muted-foreground hover:text-red-400"><Trash2 size={16}/></button></article>) : members.map((item,i)=><article key={`${item.name}-${i}`} className="flex items-center justify-between gap-4 border border-white/10 p-4"><div><h3 className="font-semibold">{item.name}</h3><p className="mt-1 text-xs text-primary">{item.role} · {item.department}</p></div><div className="flex gap-1"><button onClick={()=>edit(i)} className="px-3 py-2 text-xs text-primary hover:bg-primary/10">Edit</button><button aria-label={`Delete ${item.name}`} onClick={()=>saveMembers(members.filter((_,j)=>j!==i))} className="p-2 text-muted-foreground hover:text-red-400"><Trash2 size={16}/></button></div></article>)}
             {((tab === "events" && events.length === 0) || (tab === "team" && members.length === 0)) && <p className="py-8 text-sm text-muted-foreground">Nothing added yet.</p>}
           </div>
         </section>
