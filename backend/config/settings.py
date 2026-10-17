@@ -29,9 +29,9 @@ SECRET_KEY = 'django-insecure-llvovvjtcvi*x^-t&eq)m1b=$6hj*$*&&5*hoowb^_fmt*@=1i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['egneema.onrender.com']
+ALLOWED_HOSTS = ['enigma.onrender.com', 'egneema.onrender.com']
 
-CORS_ALLOWED_ORIGINS = [os.getenv('FRONTEND_ORIGIN', 'https://egnima-drab.vercel.app'), 'http://localhost:8080']
+CORS_ALLOWED_ORIGINS = [os.getenv('FRONTEND_ORIGIN', 'https://enigma-club.vercel.app'), 'https://egnima-drab.vercel.app', 'http://localhost:8080']
 
 # Allow the image endpoint to receive files up to its 5 MB validation limit.
 DATA_UPLOAD_MAX_MEMORY_SIZE = 6 * 1024 * 1024

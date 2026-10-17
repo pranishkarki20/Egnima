@@ -13,10 +13,13 @@ from .mongodb import get_mongo_database
 
 
 def _cors(response, request):
-    configured_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:8080")
+    configured_origin = os.environ.get("FRONTEND_ORIGIN", "https://enigma-club.vercel.app")
     origin = request.headers.get("Origin")
-    allowed_origins = {configured_origin, "https://egnima-drab.vercel.app"}
-    response["Access-Control-Allow-Origin"] = origin if origin in allowed_origins else configured_origin
+    allowed_origins = {configured_origin, "https://enigma-club.vercel.app", "https://egnima-drab.vercel.app", "http://localhost:8080"}
+    if origin in allowed_origins:
+        response["Access-Control-Allow-Origin"] = origin
+    else:
+        response["Access-Control-Allow-Origin"] = configured_origin
     response["Access-Control-Allow-Headers"] = "Authorization, Content-Type"
     response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     patch_vary_headers(response, ("Origin",))
