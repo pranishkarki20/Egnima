@@ -1,4 +1,4 @@
-import { apiFetch } from "@/lib/api";
+import { apiFetch, apiUrl } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Code2, Cpu, Github, Instagram, Linkedin, Menu, ShieldCheck, Sparkles, Terminal, X } from "lucide-react";
@@ -145,14 +145,14 @@ function Index() {
         <div className="section-heading-row events-heading"><div><p className="eyebrow">Make room for a new idea</p><h2 className="section-title">Coming <em>into focus.</em></h2></div><span className="mono-label">UP NEXT / 2026</span></div>
         <div className="event-list">{orderedEvents.map((event) => <article className="event-row" key={event.id}>
           
-          <span className="event-date"><strong>{event.date}</strong><small>{event.date < today ? "PAST EVENT" : "UPCOMING EVENT"}</small>{event.image && <img className="event-photo" src={event.image} alt="" />}</span><span className="event-title">{event.title}</span><span className="event-time">{event.location}</span><button type="button" className="event-arrow" aria-label={`View details for ${event.title}`} onClick={() => setSelectedEvent(event)}><ArrowUpRight size={18} /></button>
+          <span className="event-date"><strong>{event.date}</strong><small>{event.date < today ? "PAST EVENT" : "UPCOMING EVENT"}</small>{event.image && <img className="event-photo" src={apiUrl(event.image)} alt="" />}</span><span className="event-title">{event.title}</span><span className="event-time">{event.location}</span><button type="button" className="event-arrow" aria-label={`View details for ${event.title}`} onClick={() => setSelectedEvent(event)}><ArrowUpRight size={18} /></button>
         </article>)}{orderedEvents.length === 0 && <p className="team-note">New events are on the way. Check back soon.</p>}</div>
       </div></section>
       <section className="team section-pad" id="team"><div className="page-wrap"><div className="section-kicker"><span>THE PEOPLE</span><span className="kicker-line" /></div>
         <div className="section-heading-row team-heading"><div><p className="eyebrow">Different strengths. Shared curiosity.</p><h2 className="section-title">Meet the <em>makers.</em></h2></div><p className="section-aside">The people creating space<br />for the next big question.</p></div>
         <div className="team-tabs" role="tablist" aria-label="Team categories">{teamGroups.filter(group => teamMembers.some(member => memberBelongsToGroup(member, group.department))).map(group => <button key={group.department} type="button" role="tab" aria-selected={activeTeam === group.department} onClick={() => setActiveTeam(group.department)}>{group.department}</button>)}</div>
         {(() => { const group = teamGroups.find(item => item.department === activeTeam); const members = teamMembers.filter(member => memberBelongsToGroup(member, activeTeam)).sort((a, b) => memberOrder(a, activeTeam) - memberOrder(b, activeTeam)); return <section className="team-group" aria-labelledby="active-team-heading"><h3 className="team-group-heading" id="active-team-heading">{group?.title || activeTeam}</h3><div className={`team-grid${members.length <= 2 ? " team-grid-centered" : ""}`}>{members.map((member, i) => { const initials = member.name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase(); return <article className={`member-card member-tone-${i % 3 + 1}`} key={member.id || member.name}>
-          <div className={`member-art${member.image ? " has-photo" : ""}`}>{member.image ? <img className="member-photo" src={member.image} alt={member.name} /> : <><span className="member-orbit" aria-hidden="true" /><span className="member-initials">{initials}</span></>}{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /></a>}</div>
+          <div className={`member-art${member.image ? " has-photo" : ""}`}>{member.image ? <img className="member-photo" src={apiUrl(member.image)} alt={member.name} /> : <><span className="member-orbit" aria-hidden="true" /><span className="member-initials">{initials}</span></>}{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /></a>}</div>
           <div className="member-info"><div><h3>{member.name}</h3><p>{member.role}</p></div><span className="member-arrow"><ArrowUpRight size={16} /></span></div>
         </article>; })}{members.length === 0 && <p className="team-note">No members in this category yet.</p>}</div></section>; })()}
         <p className="team-note">The team roster is updated by ENIGMA administrators.</p>
@@ -167,7 +167,7 @@ function Index() {
     {selectedEvent && createPortal(<div className="event-modal-overlay" onClick={() => setSelectedEvent(null)}>
       <section className="event-modal" role="dialog" aria-modal="true" aria-labelledby="event-modal-title" onClick={event => event.stopPropagation()}>
         <button type="button" className="event-modal-close" aria-label="Close event details" onClick={() => setSelectedEvent(null)}><X size={20} /></button>
-        <div className="event-modal-media">{selectedEvent.image ? <img src={selectedEvent.image} alt={selectedEvent.title} /> : <div className="event-modal-placeholder"><span>ENIGMA EVENT</span></div>}</div>
+        <div className="event-modal-media">{selectedEvent.image ? <img src={apiUrl(selectedEvent.image)} alt={selectedEvent.title} /> : <div className="event-modal-placeholder"><span>ENIGMA EVENT</span></div>}</div>
         <div className="event-modal-content"><p className="event-modal-kicker">{selectedEvent.date < today ? "PAST EVENT" : "UPCOMING EVENT"}</p><h2 id="event-modal-title">{selectedEvent.title}</h2><p className="event-modal-description">{selectedEvent.description}</p><dl className="event-modal-details"><div><dt>Date</dt><dd>{selectedEvent.date}</dd></div><div><dt>Location</dt><dd>{selectedEvent.location}</dd></div></dl>{selectedEvent.link && <a className="event-modal-link" href={selectedEvent.link} target="_blank" rel="noreferrer">Event details / Register <ArrowUpRight size={16} /></a>}</div>
       </section>
     </div>, document.body)}  </main>;
