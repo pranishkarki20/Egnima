@@ -90,8 +90,8 @@ function Index() {
     }, { threshold: 0.12, rootMargin: "0px 0px -7% 0px" });
 
     const staggerGroups = [
-      ".hero-copy, .hero-art", ".section-kicker",
-      ".section-heading-row", ".program-card", ".event-row", ".team-group-heading", ".team-note", ".join-content", ".footer-main", ".footer-bottom",
+      ".hero-copy .eyebrow, .hero h1, .hero-description, .hero-actions, .hero-meta, .hero-art", ".about-heading, .about-manifesto, .about-mission", ".section-kicker",
+      ".section-heading-row", ".program-card", ".event-row", ".member-card, .about-card, .principle", ".team-group-heading", ".team-note", ".join-content", ".footer-main", ".footer-bottom",
     ];
     staggerGroups.forEach((selector) => {
       root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
@@ -102,7 +102,7 @@ function Index() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [events, teamMembers, activeTeam]);
 
   useEffect(() => {
     const nav = document.querySelector(".site-nav");

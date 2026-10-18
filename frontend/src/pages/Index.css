@@ -248,3 +248,80 @@
     grid-column: 2;
   }
 }
+
+/* Extra motion details across the content cards */
+.enigma-site .member-art::before,
+.enigma-site .member-art::after { transition: transform .65s cubic-bezier(.2,.7,.2,1), border-color .35s ease; }
+.enigma-site .member-card:hover .member-art::before { transform: rotate(48deg) scale(1.08); border-color: rgba(226,201,64,.42); }
+.enigma-site .member-card:hover .member-art::after { transform: rotate(22deg) scale(1.05); border-color: rgba(244,240,229,.16); }
+.enigma-site .member-socials .member-social svg { transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+.enigma-site .member-socials .member-social:hover svg { transform: scale(1.14) rotate(-8deg); }
+.enigma-site .event-arrow { transition: transform .35s cubic-bezier(.2,.7,.2,1), background .25s ease, color .25s ease, box-shadow .25s ease; }
+.enigma-site .event-row:hover .event-arrow { box-shadow: 0 0 22px rgba(226,201,64,.22); }
+.enigma-site .team-tabs button { position: relative; overflow: hidden; }
+.enigma-site .team-tabs button::after { content: ""; position: absolute; left: 14px; right: 100%; bottom: 4px; height: 1px; background: var(--gold); transition: right .25s ease; }
+.enigma-site .team-tabs button:hover::after,
+.enigma-site .team-tabs button[aria-selected="true"]::after { right: 14px; }
+.enigma-site[data-motion-ready="true"] [data-reveal].is-visible.member-card:hover { transform: translate3d(0,-8px,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal].is-visible.about-card:hover { transform: translate3d(0,-4px,0); }
+@media (prefers-reduced-motion: reduce) {
+  .enigma-site .member-art::before,
+  .enigma-site .member-art::after,
+  .enigma-site .member-socials .member-social svg,
+  .enigma-site .event-arrow,
+  .enigma-site .team-tabs button::after { transition: none; }
+}
+
+/* Hero entrance and route motion */
+.route-transition { min-height: 100vh; }
+.hero-glow { animation: enigma-glow-drift 12s ease-in-out infinite alternate; will-change: transform, opacity; }
+@keyframes enigma-glow-drift {
+  from { transform: translate3d(0,-45%,0) scale(1); opacity: .72; }
+  to { transform: translate3d(-2%,-48%,0) scale(1.06); opacity: 1; }
+}
+
+/* Smooth open and close for the compact navigation */
+@media (max-width: 680px) {
+  .nav-links {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity .2s ease, transform .2s ease, visibility .2s ease;
+  }
+  .nav-links.is-open {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    animation: none;
+  }
+}
+
+/* Clear pressed and disabled feedback */
+.enigma-site button { transition: color .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease, transform .2s ease; }
+.enigma-site button:active, .enigma-site .button:active { transform: scale(.97); }
+.enigma-site button:disabled { cursor: not-allowed; opacity: .55; }
+.enigma-site .text-link svg, .enigma-site .learn-link svg, .enigma-site .footer-bottom a svg { transition: transform .22s ease; }
+.enigma-site .learn-link:hover svg, .enigma-site .footer-bottom a:hover svg { transform: translate(3px,-2px); }
+@media (hover: none) {
+  .enigma-site .program-card:active, .enigma-site .member-card:active { transform: scale(.985); }
+  .enigma-site .event-row:active { background: rgba(68,52,95,.22); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-glow { animation: none; will-change: auto; }
+  .route-transition { min-height: 100vh; }
+}
+
+.hero-grid { animation: enigma-grid-arrive 1.1s ease-out both; }
+@keyframes enigma-grid-arrive {
+  from { opacity: 0; transform: scale(1.035); }
+  to { opacity: .3; transform: scale(1); }
+}
+.enigma-site[data-motion-ready="true"] [data-reveal].is-visible.program-card:hover { transform: translate3d(0,-6px,0); }
+@media (max-width: 680px) {
+  .nav-links { transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s; }
+  .nav-links.is-open { transition-delay: 0s; }
+}
