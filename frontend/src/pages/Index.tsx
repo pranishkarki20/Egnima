@@ -111,7 +111,21 @@ function Index() {
     window.addEventListener("scroll", updateNav, { passive: true });
     return () => window.removeEventListener("scroll", updateNav);
   }, []);
+  useEffect(() => {
+    const root = document.querySelector<HTMLElement>(".enigma-site");
+    const pointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!root || !pointer.matches || reducedMotion.matches) return undefined;
+
+    const moveAura = (event: PointerEvent) => {
+      root.style.setProperty("--pointer-x", `${event.clientX}px`);
+      root.style.setProperty("--pointer-y", `${event.clientY}px`);
+    };
+    window.addEventListener("pointermove", moveAura, { passive: true });
+    return () => window.removeEventListener("pointermove", moveAura);
+  }, []);
   return <main className="enigma-site">
+    <div className="pointer-aura" aria-hidden="true" />
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-nav"><div className="nav-inner">
       <a className="brand" href="#home" aria-label="ENIGMA home" onClick={() => setMenuOpen(false)}><img src={enigmaLogo} alt="" className="brand-mark" /><span className="brand-name">ENIGMA<span className="brand-period">.</span></span></a>
@@ -152,7 +166,7 @@ function Index() {
         <div className="section-heading-row team-heading"><div><p className="eyebrow">Different strengths. Shared curiosity.</p><h2 className="section-title">Meet the <em>makers.</em></h2></div><p className="section-aside">The people creating space<br />for the next big question.</p></div>
         <div className="team-tabs" role="tablist" aria-label="Team categories">{teamGroups.filter(group => teamMembers.some(member => memberBelongsToGroup(member, group.department))).map(group => <button key={group.department} type="button" role="tab" aria-selected={activeTeam === group.department} onClick={() => setActiveTeam(group.department)}>{group.department}</button>)}</div>
         {(() => { const group = teamGroups.find(item => item.department === activeTeam); const members = teamMembers.filter(member => memberBelongsToGroup(member, activeTeam)).sort((a, b) => memberOrder(a, activeTeam) - memberOrder(b, activeTeam)); return <section className="team-group" aria-labelledby="active-team-heading"><h3 className="team-group-heading" id="active-team-heading">{group?.title || activeTeam}</h3><div className={`team-grid${members.length <= 2 ? " team-grid-centered" : ""}`}>{members.map((member, i) => { const initials = member.name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase(); return <article className={`member-card member-tone-${i % 3 + 1}`} key={member.id || member.name}>
-          <div className={`member-art${member.image ? " has-photo" : ""}`}>{member.image ? <img className="member-photo" src={apiUrl(member.image)} alt={member.name} /> : <><span className="member-orbit" aria-hidden="true" /><span className="member-initials">{initials}</span></>}{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /></a>}</div>
+          <div className={`member-art${member.image ? " has-photo" : ""}`}>{member.image ? <img className="member-photo" src={apiUrl(member.image)} alt={member.name} /> : <><span className="member-orbit" aria-hidden="true" /><span className="member-initials">{initials}</span></>}{(member.github || member.linkedin) && <div className="member-socials">{member.github && <a className="member-social" href={member.github} target="_blank" rel="noreferrer" aria-label={`GitHub profile for ${member.name}`}><Github size={16} /></a>}{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /></a>}</div>}</div>
           <div className="member-info"><div><h3>{member.name}</h3><p>{member.role}</p></div><span className="member-arrow"><ArrowUpRight size={16} /></span></div>
         </article>; })}{members.length === 0 && <p className="team-note">No members in this category yet.</p>}</div></section>; })()}
         <p className="team-note">The team roster is updated by ENIGMA administrators.</p>
