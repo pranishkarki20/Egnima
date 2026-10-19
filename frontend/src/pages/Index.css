@@ -374,3 +374,19 @@
 }
 /* Keep the established row and card hover transitions alongside reveal motion. */
 .enigma-site[data-motion-ready="true"] [data-reveal] { transition: opacity .72s cubic-bezier(.2,.65,.25,1), transform .72s cubic-bezier(.2,.65,.25,1), border-color .25s ease, background .25s ease, padding .22s ease; }
+
+/* About fails open: its copy stays visible even if an observer event is missed. */
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-heading"],
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-manifesto"],
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-capability"],
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-mission"] { opacity: 1; transform: none; clip-path: none; transition: none; will-change: auto; }
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-heading"].is-visible { animation: about-heading-wipe .9s cubic-bezier(.76,0,.24,1); }
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-manifesto"].is-visible { animation: about-manifesto-enter .68s cubic-bezier(.2,.65,.25,1); }
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-capability"].is-visible { animation: about-capability-enter .68s cubic-bezier(.2,.65,.25,1); animation-delay: calc(var(--reveal-delay,0ms) + 100ms); }
+.enigma-site[data-motion-ready="true"] .about-dossier [data-reveal="about-mission"].is-visible { animation: about-manifesto-enter .68s cubic-bezier(.2,.65,.25,1); }
+@keyframes about-heading-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes about-manifesto-enter { from { opacity: 0; transform: translate3d(34px,0,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
+@keyframes about-capability-enter { from { opacity: 0; transform: translate3d(0,24px,0) rotate(-1.5deg); } to { opacity: 1; transform: translate3d(0,0,0) rotate(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .enigma-site[data-motion-ready="true"] .about-dossier [data-reveal].is-visible { animation: none; }
+}
