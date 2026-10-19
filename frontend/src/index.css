@@ -196,3 +196,13 @@ div[id*="botpress-webchat"] {
   display: none !important;
 }
 
+
+@layer utilities {
+  /* Animated ENIGMA cursor for precise pointer devices. */
+  @media (hover: hover) and (pointer: fine) {
+    .enigma-site, .enigma-site * { cursor: none !important; }
+    .enigma-site input, .enigma-site textarea, .enigma-site [contenteditable="true"] { cursor: text !important; }
+    .enigma-site.has-custom-cursor .enigma-cursor { opacity: 1; }
+    .enigma-site.cursor-text .enigma-cursor { opacity: 0; }
+  }
+}

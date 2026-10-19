@@ -124,17 +124,36 @@ function Index() {
     const root = document.querySelector<HTMLElement>(".enigma-site");
     const pointer = window.matchMedia("(hover: hover) and (pointer: fine)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!root || !pointer.matches || reducedMotion.matches) return undefined;
+    if (!root || !pointer.matches) return undefined;
+    let stopTimer = 0;
 
-    const moveAura = (event: PointerEvent) => {
+    const moveCursor = (event: PointerEvent) => {
       root.style.setProperty("--pointer-x", `${event.clientX}px`);
       root.style.setProperty("--pointer-y", `${event.clientY}px`);
+      root.classList.add("has-custom-cursor");
+      const target = event.target instanceof Element ? event.target : null;
+      root.classList.toggle("cursor-text", Boolean(target?.closest("input, textarea, [contenteditable=\"true\"]")));
+      if (!reducedMotion.matches) {
+        root.classList.add("cursor-moving");
+        window.clearTimeout(stopTimer);
+        stopTimer = window.setTimeout(() => root.classList.remove("cursor-moving"), 150);
+      }
     };
-    window.addEventListener("pointermove", moveAura, { passive: true });
-    return () => window.removeEventListener("pointermove", moveAura);
+    const leaveSite = () => {
+      root.classList.remove("has-custom-cursor", "cursor-moving", "cursor-text");
+      window.clearTimeout(stopTimer);
+    };
+    window.addEventListener("pointermove", moveCursor, { passive: true });
+    root.addEventListener("pointerleave", leaveSite);
+    return () => {
+      window.removeEventListener("pointermove", moveCursor);
+      root.removeEventListener("pointerleave", leaveSite);
+      window.clearTimeout(stopTimer);
+    };
   }, []);
   return <main className="enigma-site">
     <div className="pointer-aura" aria-hidden="true" />
+    <div className="enigma-cursor" aria-hidden="true"><img className="enigma-cursor-logo" src={enigmaLogo} alt="" /></div>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-nav"><div className="nav-inner">
       <a className="brand" href="#home" aria-label="ENIGMA home" onClick={() => setMenuOpen(false)}><img src={enigmaLogo} alt="" className="brand-mark" /><span className="brand-name">ENIGMA<span className="brand-period">.</span></span></a>

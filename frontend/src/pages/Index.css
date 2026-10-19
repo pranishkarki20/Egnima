@@ -390,3 +390,12 @@
 @media (prefers-reduced-motion: reduce) {
   .enigma-site[data-motion-ready="true"] .about-dossier [data-reveal].is-visible { animation: none; }
 }
+
+/* Gold hover glow around the full team profile card. */
+.enigma-site .member-card { transition: transform .35s cubic-bezier(.2,.7,.2,1), border-color .3s ease, box-shadow .35s ease; }
+.enigma-site .member-card:hover { border-color: rgba(240,217,86,.78); box-shadow: 0 0 0 1px rgba(226,201,64,.18), 0 18px 44px rgba(0,0,0,.34), 0 0 32px rgba(226,201,64,.2); }
+
+.enigma-site > .enigma-cursor { position: fixed; z-index: 10001; top: 0; left: 0; width: 34px; height: 34px; opacity: 0; pointer-events: none; transform: translate3d(var(--pointer-x,-100px),var(--pointer-y,-100px),0) translate(-50%,-50%); transition: opacity .12s ease; }
+.enigma-cursor-logo { display: block; width: 34px; height: 34px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(226,201,64,.45)); }
+@media (hover: none), (pointer: coarse) { .enigma-cursor { display: none; } }
+@media (prefers-reduced-motion: reduce) { .enigma-cursor { transition: none; } .pointer-aura { display: none; } }
