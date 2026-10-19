@@ -156,7 +156,7 @@ function Index() {
   }, []);
   return <main className="enigma-site">
     <div className="pointer-aura" aria-hidden="true" />
-    <div className="code-language-field" aria-hidden="true">{["TECH COMMUNITY","BUILD TOGETHER","AI / ML","WEB DEVELOPMENT","ROBOTICS","WORKSHOPS","OPEN SOURCE","HACKATHONS","CREATIVE CODING","PROJECT SHOWCASE","LEARN / EXPLORE","ENIGMA CLUB"].map((language) => <span className="code-language" key={language}>{language}</span>)}</div>
+    <div className="code-language-field" aria-hidden="true">{["TECH COMMUNITY","BUILD TOGETHER","AI / ML","WEB DEVELOPMENT","ROBOTICS","WORKSHOPS","OPEN SOURCE","HACKATHONS","CREATIVE CODING","PROJECT SHOWCASE","LEARN / EXPLORE","ENIGMA CLUB","AI INNOVATION","TECH TALKS","STUDENT BUILDERS","DIGITAL DESIGN","HARDWARE LAB","IDEA TO IMPACT","PEER LEARNING","BUILD / TEST / SHARE"].map((language) => <span className="code-language" key={language}>{language}</span>)}</div>
     <div className="enigma-cursor" aria-hidden="true"><img className="enigma-cursor-logo" src={enigmaLogo} alt="" /></div>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-nav"><div className="nav-inner">

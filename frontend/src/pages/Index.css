@@ -424,9 +424,9 @@
 
 @media(prefers-reduced-motion:reduce){.hero::before{transform:none!important;transition:none!important;will-change:auto}}
 /* Slow-moving language labels add a restrained technical texture across the page. */
-.enigma-site > div.code-language-field{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none;opacity:.86;mix-blend-mode:screen}
-.enigma-site .code-language{position:absolute;display:block;color:rgba(226,201,64,.48);font:500 clamp(12px,1.05vw,16px)/1 "DM Mono",monospace;letter-spacing:.12em;text-shadow:0 0 16px rgba(226,201,64,.25);white-space:nowrap;animation:language-drift 28s linear infinite}
-.enigma-site .code-language:nth-child(even){color:rgba(198,190,207,.4);text-shadow:0 0 16px rgba(164,157,172,.22)}
+.enigma-site > div.code-language-field{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none;opacity:.96;mix-blend-mode:screen}
+.enigma-site .code-language{position:absolute;display:block;color:rgba(226,201,64,.58);font:500 clamp(13px,1.1vw,18px)/1 "DM Mono",monospace;letter-spacing:.12em;text-shadow:0 0 18px rgba(226,201,64,.32);white-space:nowrap;animation:language-drift 28s linear infinite}
+.enigma-site .code-language:nth-child(even){color:rgba(198,190,207,.48);text-shadow:0 0 18px rgba(164,157,172,.29)}
 .enigma-site .code-language:nth-child(1){top:14%;left:6%;animation-duration:25s}
 .enigma-site .code-language:nth-child(2){top:24%;right:7%;animation-duration:31s;animation-delay:-11s}
 .enigma-site .code-language:nth-child(3){top:43%;left:9%;animation-duration:28s;animation-delay:-7s}
@@ -440,7 +440,7 @@
 .enigma-site .code-language:nth-child(11){bottom:7%;right:28%;animation-duration:33s;animation-delay:-21s}
 .enigma-site .code-language:nth-child(12){top:88%;left:35%;animation-duration:27s;animation-delay:-12s}
 @keyframes language-drift{from{transform:translate3d(-22vw,0,0) rotate(-2deg)}to{transform:translate3d(22vw,-2vh,0) rotate(2deg)}}
-@media(max-width:680px){.enigma-site .code-language{font-size:11px;opacity:.92}.enigma-site .code-language:nth-child(3),.enigma-site .code-language:nth-child(8),.enigma-site .code-language:nth-child(10){display:none}}
+@media(max-width:680px){.enigma-site .code-language{font-size:12px;opacity:.96}.enigma-site .code-language:nth-child(3),.enigma-site .code-language:nth-child(8),.enigma-site .code-language:nth-child(10){display:none}}
 @media(prefers-reduced-motion:reduce){.enigma-site .code-language{animation:none;transform:none}}
 .enigma-site .code-language:nth-child(4n+2){animation-name:language-drift-reverse}
 .enigma-site .code-language:nth-child(4n+3){animation-name:language-drift-up}
@@ -462,3 +462,11 @@
 .enigma-site .what-we-do-card p{max-width:360px;margin:0;color:var(--muted);font-size:13px;line-height:1.75}
 @media(max-width:900px){.enigma-site .what-we-do-grid{gap:12px}.enigma-site .what-we-do-card{padding:20px;min-height:280px}.enigma-site .what-we-do-card h3{margin-top:45px}}
 @media(max-width:680px){.enigma-site .what-we-do-heading{margin-bottom:30px}.enigma-site .what-we-do-grid{grid-template-columns:1fr;gap:12px}.enigma-site .what-we-do-card{min-height:0;padding:20px}.enigma-site .what-we-do-card h3{margin:38px 0 10px;font-size:19px}.enigma-site .what-we-do-card p{font-size:13px}}
+.enigma-site .code-language:nth-child(13){top:3%;left:44%;animation-duration:31s;animation-delay:-18s}
+.enigma-site .code-language:nth-child(14){top:18%;right:32%;animation-duration:28s;animation-delay:-8s}
+.enigma-site .code-language:nth-child(15){top:32%;left:58%;animation-duration:34s;animation-delay:-24s}
+.enigma-site .code-language:nth-child(16){top:48%;left:25%;animation-duration:29s;animation-delay:-11s}
+.enigma-site .code-language:nth-child(17){top:57%;right:30%;animation-duration:32s;animation-delay:-6s}
+.enigma-site .code-language:nth-child(18){top:71%;left:4%;animation-duration:26s;animation-delay:-20s}
+.enigma-site .code-language:nth-child(19){top:84%;right:15%;animation-duration:35s;animation-delay:-15s}
+.enigma-site .code-language:nth-child(20){top:96%;left:62%;animation-duration:30s;animation-delay:-9s}
