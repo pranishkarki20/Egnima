@@ -185,9 +185,9 @@ function Index() {
       </div></section>
       <section className="events section-pad" id="events"><div className="page-wrap"><div className="section-kicker"><span>ON THE CALENDAR</span><span className="kicker-line" /></div>
         <div className="section-heading-row events-heading"><div><p className="eyebrow">Make room for a new idea</p><h2 className="section-title">Coming <em>into focus.</em></h2></div><span className="mono-label">UP NEXT / 2026</span></div>
-        <div className="event-list">{orderedEvents.map((event) => <article className="event-row" key={event.id}>
+        <div className="event-list">{orderedEvents.map((event) => <article className="event-row" key={event.id} onClick={() => setSelectedEvent(event)}>
           
-          <span className="event-date"><strong>{event.date}</strong><small>{event.date < today ? "PAST EVENT" : "UPCOMING EVENT"}</small>{event.image && <img className="event-photo" src={apiUrl(event.image)} alt="" />}</span><span className="event-title">{event.title}</span><span className="event-time">{event.location}</span><button type="button" className="event-arrow" aria-label={`View details for ${event.title}`} onClick={() => setSelectedEvent(event)}><ArrowUpRight size={18} /></button>
+          <span className="event-date"><strong>{event.date}</strong><small>{event.date < today ? "PAST EVENT" : "UPCOMING EVENT"}</small>{event.image && <img className="event-photo" src={apiUrl(event.image)} alt="" />}</span><span className="event-title">{event.title}</span><span className="event-time">{event.location}</span><button type="button" className="event-arrow" aria-label={`View details for ${event.title}`} ><ArrowUpRight size={18} /></button>
         </article>)}{orderedEvents.length === 0 && <p className="team-note">New events are on the way. Check back soon.</p>}</div>
       </div></section>
       <section className="team section-pad" id="team"><div className="page-wrap"><div className="section-kicker"><span>THE PEOPLE</span><span className="kicker-line" /></div>
