@@ -325,3 +325,52 @@
   .nav-links { transition: opacity .2s ease, transform .2s ease, visibility 0s linear .2s; }
   .nav-links.is-open { transition-delay: 0s; }
 }
+
+/* Team member profile cards */
+.enigma-site .member-card { display: flex; flex-direction: column; align-items: center; gap: 15px; min-height: 100%; padding: 24px 18px 20px; border: 1px solid rgba(226,201,64,.2); background: linear-gradient(155deg, rgba(47,35,64,.92), rgba(20,14,29,.96)); text-align: center; }
+.enigma-site .member-card .member-name { order: 0; margin: 0; color: var(--warm-white); font: 500 15px/1.4 "Unbounded",sans-serif; letter-spacing: -.04em; }
+.enigma-site .member-card .member-art { order: 1; width: 132px; min-height: 132px; aspect-ratio: 1; border: 2px solid rgba(226,201,64,.68); border-radius: 50%; background: radial-gradient(ellipse at 50% 40%,rgba(110,84,145,.56),transparent 65%),linear-gradient(135deg,#2d2140,#20172e 68%); box-shadow: 0 0 0 6px rgba(226,201,64,.06),0 12px 28px rgba(0,0,0,.24); }
+.enigma-site .member-card .member-art::before,.enigma-site .member-card .member-art::after { border-radius: 50%; }
+.enigma-site .member-card .member-orbit { width: 58px; height: 58px; }
+.enigma-site .member-card .member-initials { font-size: 42px; }
+.enigma-site .member-card .member-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.enigma-site .member-card .member-info { order: 2; display: flex; flex-direction: column; align-items: center; gap: 13px; padding: 0; }
+.enigma-site .member-card .member-info p { margin: 0; color: var(--muted); font-size: 12px; }
+.enigma-site .member-card .member-socials { display: flex; justify-content: center; gap: 9px; }
+.enigma-site .member-card .member-socials .member-social { display: inline-flex; align-items: center; justify-content: center; gap: 7px; width: auto; height: 34px; padding: 0 11px; border-radius: 2px; font: 10px "DM Mono",monospace; letter-spacing: .04em; }
+.enigma-site .member-card:hover .member-art { border-color: #f0da61; box-shadow: 0 0 0 7px rgba(226,201,64,.11),0 18px 42px rgba(0,0,0,.36); }
+@media (max-width: 680px) { .enigma-site .member-card { padding: 22px 16px 18px; } .enigma-site .member-card .member-art { width: 120px; min-height: 120px; } }
+
+/* Section-specific scroll reveals share one observer and reduced-motion fallback. */
+.enigma-site[data-motion-ready="true"] [data-reveal] { opacity: 0; transform: translate3d(0,18px,0); transition: opacity .72s cubic-bezier(.2,.65,.25,1), transform .72s cubic-bezier(.2,.65,.25,1); transition-delay: var(--reveal-delay,0ms); will-change: opacity,transform; }
+.enigma-site[data-motion-ready="true"] [data-reveal].is-visible { opacity: 1; transform: translate3d(0,0,0); will-change: auto; }
+.enigma-site[data-motion-ready="true"] [data-reveal="hero-crest"] { transform: translate3d(42px,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="hero-crest"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-heading"] { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path .9s cubic-bezier(.76,0,.24,1); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-heading"].is-visible { clip-path: inset(0 0 0 0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-manifesto"] { transform: translate3d(34px,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-manifesto"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-capability"] { transform: translate3d(0,24px,0) rotate(-1.5deg); transition-delay: calc(var(--reveal-delay,0ms) + 100ms); }
+.enigma-site[data-motion-ready="true"] [data-reveal="about-capability"].is-visible { transform: translate3d(0,0,0) rotate(0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="events-intro"] { transform: translate3d(-32px,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="events-intro"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="event-row"] { transform: translate3d(38px,0,0); transition-delay: var(--reveal-delay,0ms), var(--reveal-delay,0ms); }
+.enigma-site[data-motion-ready="true"] [data-reveal="event-row"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-heading"] { transform: translate3d(0,22px,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-heading"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-controls"] { transform: translate3d(-28px,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-controls"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-panel"] { transform: translate3d(36px,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="team-panel"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="join-content"] { transform: translate3d(0,22px,0) scale(.97); }
+.enigma-site[data-motion-ready="true"] [data-reveal="join-content"].is-visible { transform: translate3d(0,0,0) scale(1); }
+.enigma-site[data-motion-ready="true"] .join-watermark { animation: watermark-drift 36s ease-in-out infinite alternate; }
+.enigma-site[data-motion-ready="true"] .join-content .button-gold { animation: join-breathe 4.5s ease-in-out infinite; }
+@keyframes watermark-drift { from { translate: -10px 0; } to { translate: 16px 0; } }
+@keyframes join-breathe { 0%,100% { box-shadow: 0 8px 28px rgba(226,201,64,.11); } 50% { box-shadow: 0 8px 34px rgba(226,201,64,.28),0 0 22px rgba(226,201,64,.12); } }
+@media (prefers-reduced-motion: reduce) {
+  .enigma-site[data-motion-ready="true"] [data-reveal], .enigma-site[data-motion-ready="true"] [data-reveal].is-visible { opacity: 1; transform: none; clip-path: none; transition: none; will-change: auto; }
+  .enigma-site[data-motion-ready="true"] .join-watermark, .enigma-site[data-motion-ready="true"] .join-content .button-gold { animation: none; }
+}
+/* Keep the established row and card hover transitions alongside reveal motion. */
+.enigma-site[data-motion-ready="true"] [data-reveal] { transition: opacity .72s cubic-bezier(.2,.65,.25,1), transform .72s cubic-bezier(.2,.65,.25,1), border-color .25s ease, background .25s ease, padding .22s ease; }

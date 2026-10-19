@@ -87,20 +87,29 @@ function Index() {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: "0px 0px -7% 0px" });
+    }, { threshold: 0.01, rootMargin: "120px 0px" });
 
-    const staggerGroups = [
-      ".hero-copy .eyebrow, .hero h1, .hero-description, .hero-actions, .hero-meta, .hero-art", ".about-heading, .about-manifesto, .about-mission", ".section-kicker",
-      ".section-heading-row", ".program-card", ".event-row", ".member-card, .about-card, .principle", ".team-group-heading", ".team-note", ".join-content", ".footer-main", ".footer-bottom",
+    const revealGroups: [string, string, number][] = [
+      [".hero-copy .eyebrow", "hero-eyebrow", 0], [".hero h1", "hero-title", 1], [".hero-description", "hero-copy", 2], [".hero-actions", "hero-actions", 3], [".hero-meta", "hero-meta", 4], [".hero-art", "hero-crest", 2],
+      [".about-heading", "about-heading", 0], [".about-manifesto", "about-manifesto", 1], [".about-card", "about-capability", 0], [".about-mission", "about-mission", 1],
+      [".section-kicker", "rise", 0], [".section-heading-row:not(.events-heading):not(.team-heading)", "rise", 0], [".program-card", "capability", 0],
+      [".events-heading", "events-intro", 0], [".event-row", "event-row", 0], [".team-heading", "team-heading", 0], [".team-tabs", "team-controls", 0], [".team-group", "team-panel", 0],
+      [".team-note", "rise", 0], [".join-content", "join-content", 0], [".footer-main", "rise", 0], [".footer-bottom", "rise", 0],
     ];
-    staggerGroups.forEach((selector) => {
+    revealGroups.forEach(([selector, variant, baseDelay]) => {
       root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
-        element.setAttribute("data-reveal", "");
-        element.style.setProperty("--reveal-delay", `${Math.min(index, 4) * 75}ms`);
+        element.setAttribute("data-reveal", variant);
+        element.style.setProperty("--reveal-delay", `${baseDelay * 95 + Math.min(index, 4) * 75}ms`);
         observer.observe(element);
+        const bounds = element.getBoundingClientRect();
+        if (bounds.top < window.innerHeight && bounds.bottom > 0) {
+          window.requestAnimationFrame(() => {
+            element.classList.add("is-visible");
+            observer.unobserve(element);
+          });
+        }
       });
     });
-
     return () => observer.disconnect();
   }, [events, teamMembers, activeTeam]);
 
@@ -165,9 +174,10 @@ function Index() {
       <section className="team section-pad" id="team"><div className="page-wrap"><div className="section-kicker"><span>THE PEOPLE</span><span className="kicker-line" /></div>
         <div className="section-heading-row team-heading"><div><p className="eyebrow">Different strengths. Shared curiosity.</p><h2 className="section-title">Meet the <em>makers.</em></h2></div><p className="section-aside">The people creating space<br />for the next big question.</p></div>
         <div className="team-tabs" role="tablist" aria-label="Team categories">{teamGroups.filter(group => teamMembers.some(member => memberBelongsToGroup(member, group.department))).map(group => <button key={group.department} type="button" role="tab" aria-selected={activeTeam === group.department} onClick={() => setActiveTeam(group.department)}>{group.department}</button>)}</div>
-        {(() => { const group = teamGroups.find(item => item.department === activeTeam); const members = teamMembers.filter(member => memberBelongsToGroup(member, activeTeam)).sort((a, b) => memberOrder(a, activeTeam) - memberOrder(b, activeTeam)); return <section className="team-group" aria-labelledby="active-team-heading"><h3 className="team-group-heading" id="active-team-heading">{group?.title || activeTeam}</h3><div className={`team-grid${members.length <= 2 ? " team-grid-centered" : ""}${members.length === 1 ? " team-grid-single" : ""}`}>{members.map((member, i) => { const initials = member.name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase(); return <article className={`member-card member-tone-${i % 3 + 1}`} key={member.id || member.name}>
+        {(() => { const group = teamGroups.find(item => item.department === activeTeam); const members = teamMembers.filter(member => memberBelongsToGroup(member, activeTeam)).sort((a, b) => memberOrder(a, activeTeam) - memberOrder(b, activeTeam)); return <section className="team-group" key={activeTeam} aria-labelledby="active-team-heading"><h3 className="team-group-heading" id="active-team-heading">{group?.title || activeTeam}</h3><div className={`team-grid${members.length <= 2 ? " team-grid-centered" : ""}${members.length === 1 ? " team-grid-single" : ""}`}>{members.map((member, i) => { const initials = member.name.split(/\s+/).map(part => part[0]).join("").slice(0, 2).toUpperCase(); return <article className={`member-card member-tone-${i % 3 + 1}`} key={member.id || member.name}>
+          <h3 className="member-name">{member.name}</h3>
           <div className={`member-art${member.image ? " has-photo" : ""}`}>{member.image ? <img className="member-photo" src={apiUrl(member.image)} alt={member.name} /> : <><span className="member-orbit" aria-hidden="true" /><span className="member-initials">{initials}</span></>}</div>
-          <div className="member-info"><div><h3>{member.name}</h3><p>{member.role}</p></div>{(member.github || member.linkedin) && <div className="member-socials">{member.github && <a className="member-social" href={member.github} target="_blank" rel="noreferrer" aria-label={`GitHub profile for ${member.name}`}><Github size={16} /></a>}{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /></a>}</div>}<span className="member-arrow"><ArrowUpRight size={16} /></span></div>
+          <div className="member-info"><p>{member.role}</p>{(member.github || member.linkedin) && <div className="member-socials">{member.linkedin && <a className="member-social" href={member.linkedin} target="_blank" rel="noreferrer" aria-label={`LinkedIn profile for ${member.name}`}><Linkedin size={16} /><span>LinkedIn</span></a>}{member.github && <a className="member-social" href={member.github} target="_blank" rel="noreferrer" aria-label={`GitHub profile for ${member.name}`}><Github size={16} /><span>GitHub</span></a>}</div>}</div>
         </article>; })}{members.length === 0 && <p className="team-note">No members in this category yet.</p>}</div></section>; })()}
         <p className="team-note">The team roster is updated by ENIGMA administrators.</p>
       </div></section>
