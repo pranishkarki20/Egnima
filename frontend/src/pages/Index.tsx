@@ -1,17 +1,12 @@
-import { apiFetch, apiUrl } from "@/lib/api";
+ï»¿import { apiFetch, apiUrl } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Code2, Cpu, Github, Instagram, Linkedin, Menu, ShieldCheck, Sparkles, Terminal, X } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Github, Instagram, Linkedin, Menu, ShieldCheck, Terminal, X } from "lucide-react";
 import enigmaLogo from "@/assets/Logo_Updated.png";
 import About from "@/components/About";
 import "./Index.css";
 
-const navItems = [{ label: "About", href: "#about" }, { label: "What We Do", href: "#programs" }, { label: "Events", href: "#events" }, { label: "Team", href: "#team" }];
-const programs = [
-  { name: "Build Lab", icon: Code2, description: "Weekly product-building sprints, web development, applications, and open source. Bring a sketch. Leave with a working thing.", tags: ["PRODUCT", "WEB", "OPEN SOURCE"] },
-  { name: "Frontier Sessions", icon: Cpu, description: "Curiosity-led sessions across AI, machine learning, robotics, and cybersecurity. Make the unfamiliar feel buildable.", tags: ["AI / ML", "ROBOTICS", "SECURITY"] },
-  { name: "Launchpad", icon: Sparkles, description: "Mentorship, project development, demo days, and career preparation to move promising ideas into the world.", tags: ["MENTORSHIP", "DEMO DAYS", "CAREERS"] },
-];
+const navItems = [{ label: "About", href: "#about" }, { label: "Events", href: "#events" }, { label: "Team", href: "#team" }];
 type PublicEvent = { id: string; title: string; date: string; location: string; description: string; image: string; link: string };
 type PublicMember = { id?: string; name: string; role: string; department: string; description: string; image: string; email?: string; linkedin?: string; github?: string };
 const teamGroups = [{ department: "Core Team", title: "Leads" }, { department: "Technical", title: "Technical Team" }, { department: "Social Media", title: "Social Media" }, { department: "Resource", title: "Resource Team" }, { department: "Operational", title: "Operations Team" }, { department: "Research", title: "Research Team" }];
@@ -94,7 +89,7 @@ function Index() {
       [".about-heading", "about-heading", 0], [".about-manifesto", "about-manifesto", 1], [".about-card", "about-capability", 0], [".about-mission", "about-mission", 1],
       [".section-kicker", "rise", 0], [".section-heading-row:not(.events-heading):not(.team-heading)", "rise", 0], [".program-card", "capability", 0],
       [".events-heading", "events-intro", 0], [".event-row", "event-row", 0], [".team-heading", "team-heading", 0], [".team-tabs", "team-controls", 0], [".team-group", "team-panel", 0],
-      [".team-note", "rise", 0], [".join-content", "join-content", 0], [".footer-main", "rise", 0], [".footer-bottom", "rise", 0],
+      [".team-note", "rise", 0], [".join-content", "join-content", 0], [".join-watermark", "join-watermark", 0], [".footer-main", "rise", 0], [".footer-bottom", "rise", 0],
     ];
     revealGroups.forEach(([selector, variant, baseDelay]) => {
       root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
@@ -173,16 +168,9 @@ function Index() {
           <div className="hero-actions"><a className="button button-gold" href={joinLink} target="_blank" rel="noreferrer">Become a Member <ArrowUpRight size={17} /></a><a className="text-link" href="#about">Explore the Club <ArrowDownRight size={16} /></a></div>
           <div className="hero-meta"><span>JAIN UNIVERSITY</span><span className="meta-dot" /><span>EST. FOR THE CURIOUS</span></div>
         </div><div className="hero-art"><img src={enigmaLogo} alt="ENIGMA emblem" /></div></div>
-        <a className="scroll-cue" href="#about"><span>SCROLL TO EXPLORE</span><span className="scroll-line" /></a><span className="hero-coord" aria-hidden="true">12°38'17?N &nbsp; 77°26'26?E</span>
+        <a className="scroll-cue" href="#about"><span>SCROLL TO EXPLORE</span><span className="scroll-line" /></a><span className="hero-coord" aria-hidden="true">12Â°38'17?N &nbsp; 77Â°26'26?E</span>
       </section>
       <About />
-      <section className="programs section-pad" id="programs"><div className="page-wrap"><div className="section-kicker"><span>YOUR ENTRY POINT</span><span className="kicker-line" /></div>
-        <div className="section-heading-row"><div><p className="eyebrow">Choose a direction. Change it anytime.</p><h2 className="section-title">Find your <em>way in.</em></h2></div><p className="section-aside">Three ways to get curious,<br />get practical, and get moving.</p></div>
-        <div className="program-grid">{programs.map((program) => { const Icon = program.icon; return <article className="program-card" key={program.name}>
-          <div className="program-top"><span className="mono-label">PROGRAM</span><Icon size={22} strokeWidth={1.4} /></div><h3>{program.name}</h3><p className="program-description">{program.description}</p>
-          <div className="program-bottom"><div className="tag-list">{program.tags.map((tag) => <span key={tag}>{tag}</span>)}</div><a href={joinLink} target="_blank" rel="noreferrer" className="learn-link">Learn More <ArrowUpRight size={15} /></a></div>
-        </article>; })}</div>
-      </div></section>
       <section className="events section-pad" id="events"><div className="page-wrap"><div className="section-kicker"><span>ON THE CALENDAR</span><span className="kicker-line" /></div>
         <div className="section-heading-row events-heading"><div><p className="eyebrow">Make room for a new idea</p><h2 className="section-title">Coming <em>into focus.</em></h2></div><span className="mono-label">UP NEXT / 2026</span></div>
         <div className="event-list">{orderedEvents.map((event) => <article className="event-row" key={event.id} onClick={() => setSelectedEvent(event)}>
@@ -200,12 +188,12 @@ function Index() {
         </article>; })}{members.length === 0 && <p className="team-note">No members in this category yet.</p>}</div></section>; })()}
         <p className="team-note">The team roster is updated by ENIGMA administrators.</p>
       </div></section>
-      <section className="join-section" id="join"><div className="join-watermark" aria-hidden="true">THINK / MAKE / SHARE</div><div className="join-grid" aria-hidden="true" />
-        <div className="page-wrap join-content"><p className="eyebrow"><span className="eyebrow-rule" /> The Door Is Open</p><h2>Bring your<br />curiosity.<br /><span>We’ll bring the<br /><em>momentum.</em></span></h2><p className="join-copy">Whether you have a first idea or a half-built prototype, there’s a place for you here. Come learn, make, and meet your people.</p><a className="button button-gold" href={joinLink} target="_blank" rel="noreferrer">Join Enigma <ArrowUpRight size={17} /></a></div>
+      <section className="join-section" id="join"><div className="join-watermark" aria-hidden="true">YOUR NEXT IDEA</div><div className="join-grid" aria-hidden="true" />
+        <div className="page-wrap join-content"><p className="eyebrow"><span className="eyebrow-rule" /> THE DOOR IS OPEN</p><h2>Bring your curiosity.<br />Weâ€™ll bring the<br /><em>momentum.</em></h2><p className="join-copy">Experience doesnâ€™t matter. Curiosity does. Join Enigma and start building whatâ€™s next.</p><a className="button button-gold join-cta" href={joinLink} target="_blank" rel="noreferrer">Join Enigma <ArrowRight size={17} aria-hidden="true" /></a></div>
       </section>
     </div>
     <footer className="site-footer"><div className="page-wrap"><div className="footer-main"><a className="brand footer-brand" href="#home"><img src={enigmaLogo} alt="" className="brand-mark" /><span className="brand-name">ENIGMA<span className="brand-period">.</span></span></a><p>Built by curious minds,<br />for curious minds.</p><div className="footer-socials"><a href="https://www.instagram.com/ju_enigma/?hl=en" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram size={17} /></a><a href="https://github.com/" target="_blank" rel="noreferrer" aria-label="GitHub"><Github size={17} /></a><a href="https://www.linkedin.com/company/enigma-club-ju/posts/?feedView=all" target="_blank" rel="noreferrer" aria-label="LinkedIn"><Linkedin size={17} /></a></div></div>
-      <div className="footer-bottom"><span>© {new Date().getFullYear()} ENIGMA CLUB · JAIN UNIVERSITY</span><a href="#home">BACK TO THE SURFACE <ArrowRight size={13} /></a><span>MADE FOR THE RELENTLESSLY CURIOUS</span></div>
+      <div className="footer-bottom"><span>Â© {new Date().getFullYear()} ENIGMA CLUB Â· JAIN UNIVERSITY</span><a href="#home">BACK TO THE SURFACE <ArrowRight size={13} /></a><span>MADE FOR THE RELENTLESSLY CURIOUS</span></div>
     </div></footer><a className="floating-join" href={joinLink} target="_blank" rel="noreferrer" aria-label="Join ENIGMA"><span>JOIN</span><ArrowUpRight size={15} /></a>
     {selectedEvent && createPortal(<div className="event-modal-overlay" onClick={() => setSelectedEvent(null)}>
       <section className="event-modal" role="dialog" aria-modal="true" aria-labelledby="event-modal-title" onClick={event => event.stopPropagation()}>
