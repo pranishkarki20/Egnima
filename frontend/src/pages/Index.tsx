@@ -1,12 +1,13 @@
 ﻿import { apiFetch, apiUrl } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Github, Instagram, Linkedin, Menu, ShieldCheck, Terminal, X } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Braces, Github, Instagram, Linkedin, Menu, MessageCircle, ShieldCheck, Terminal, X } from "lucide-react";
 import enigmaLogo from "@/assets/Logo_Updated.png";
 import About from "@/components/About";
 import "./Index.css";
 
-const navItems = [{ label: "About", href: "#about" }, { label: "Events", href: "#events" }, { label: "Team", href: "#team" }];
+const navItems = [{ label: "About", href: "#about" }, { label: "What We Do", href: "#what-we-do" }, { label: "Events", href: "#events" }, { label: "Team", href: "#team" }];
+const whatWeDoItems = [{ number: "01", title: "Tech Competitions", icon: Braces, description: "Take on technology challenges, collaborate in teams, and turn bold ideas into working projects." }, { number: "02", title: "Workshops", icon: Terminal, description: "Build practical skills through hands-on sessions in software, AI, hardware, and creative technology." }, { number: "03", title: "Seminars", icon: MessageCircle, description: "Explore emerging ideas and career paths through talks and conversations with people in tech." }];
 type PublicEvent = { id: string; title: string; date: string; location: string; description: string; image: string; link: string };
 type PublicMember = { id?: string; name: string; role: string; department: string; description: string; image: string; email?: string; linkedin?: string; github?: string };
 const teamGroups = [{ department: "Core Team", title: "Leads" }, { department: "Technical", title: "Technical Team" }, { department: "Social Media", title: "Social Media" }, { department: "Resource", title: "Resource Team" }, { department: "Operational", title: "Operations Team" }, { department: "Research", title: "Research Team" }];
@@ -87,7 +88,7 @@ function Index() {
     const revealGroups: [string, string, number][] = [
       [".hero-copy .eyebrow", "hero-eyebrow", 0], [".hero h1", "hero-title", 1], [".hero-description", "hero-copy", 2], [".hero-actions", "hero-actions", 3], [".hero-meta", "hero-meta", 4], [".hero-art", "hero-crest", 2],
       [".about-heading", "about-heading", 0], [".about-manifesto", "about-manifesto", 1], [".about-card", "about-capability", 0], [".about-mission", "about-mission", 1],
-      [".section-kicker", "rise", 0], [".section-heading-row:not(.events-heading):not(.team-heading)", "rise", 0], [".program-card", "capability", 0],
+      [".section-kicker", "rise", 0], [".section-heading-row:not(.events-heading):not(.team-heading)", "rise", 0], [".what-we-do-card", "rise", 0], [".program-card", "capability", 0],
       [".events-heading", "events-intro", 0], [".event-row", "event-row", 0], [".team-heading", "team-heading", 0], [".team-tabs", "team-controls", 0], [".team-group", "team-panel", 0],
       [".team-note", "rise", 0], [".join-content", "join-content", 0], [".join-watermark", "join-watermark", 0], [".footer-main", "rise", 0], [".footer-bottom", "rise", 0],
     ];
@@ -127,6 +128,13 @@ function Index() {
       root.style.setProperty("--pointer-y", `${event.clientY}px`);
       root.classList.add("has-custom-cursor");
       const target = event.target instanceof Element ? event.target : null;
+      if (!reducedMotion.matches) {
+        const overHero = Boolean(target?.closest(".hero"));
+        const tiltX = ((event.clientY / window.innerHeight) - 0.5) * -1.8;
+        const tiltY = ((event.clientX / window.innerWidth) - 0.5) * 1.8;
+        root.style.setProperty("--hero-tilt-x", overHero ? String(tiltX) + "deg" : "0deg");
+        root.style.setProperty("--hero-tilt-y", overHero ? String(tiltY) + "deg" : "0deg");
+      }
       root.classList.toggle("cursor-text", Boolean(target?.closest("input, textarea, [contenteditable=\"true\"]")));
       if (!reducedMotion.matches) {
         root.classList.add("cursor-moving");
@@ -148,6 +156,7 @@ function Index() {
   }, []);
   return <main className="enigma-site">
     <div className="pointer-aura" aria-hidden="true" />
+    <div className="code-language-field" aria-hidden="true">{["TECH COMMUNITY","BUILD TOGETHER","AI / ML","WEB DEVELOPMENT","ROBOTICS","WORKSHOPS","OPEN SOURCE","HACKATHONS","CREATIVE CODING","PROJECT SHOWCASE","LEARN / EXPLORE","ENIGMA CLUB"].map((language) => <span className="code-language" key={language}>{language}</span>)}</div>
     <div className="enigma-cursor" aria-hidden="true"><img className="enigma-cursor-logo" src={enigmaLogo} alt="" /></div>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-nav"><div className="nav-inner">
@@ -168,9 +177,16 @@ function Index() {
           <div className="hero-actions"><a className="button button-gold" href={joinLink} target="_blank" rel="noreferrer">Become a Member <ArrowUpRight size={17} /></a><a className="text-link" href="#about">Explore the Club <ArrowDownRight size={16} /></a></div>
           <div className="hero-meta"><span>JAIN UNIVERSITY</span><span className="meta-dot" /><span>EST. FOR THE CURIOUS</span></div>
         </div><div className="hero-art"><img src={enigmaLogo} alt="ENIGMA emblem" /></div></div>
-        <a className="scroll-cue" href="#about"><span>SCROLL TO EXPLORE</span><span className="scroll-line" /></a><span className="hero-coord" aria-hidden="true">12°38'17?N &nbsp; 77°26'26?E</span>
+        <span className="hero-coord" aria-hidden="true">12°38'17?N &nbsp; 77°26'26?E</span>
       </section>
       <About />
+      <section className="what-we-do section-pad" id="what-we-do" aria-labelledby="what-we-do-title">
+        <div className="page-wrap">
+          <div className="section-kicker"><span>HOW WE BUILD</span><span className="kicker-line" /></div>
+          <div className="section-heading-row what-we-do-heading"><div><p className="eyebrow">Learn by making. Grow by sharing.</p><h2 className="section-title" id="what-we-do-title">What we <em>do.</em></h2></div><p className="section-aside">Ideas become skills<br />when we build together.</p></div>
+          <div className="what-we-do-grid">{whatWeDoItems.map(({ number, title, icon: Icon, description }) => <article className="what-we-do-card" key={number}><div className="what-we-do-card-top"><span>{number} / ENIGMA</span><Icon size={23} strokeWidth={1.5} aria-hidden="true" /></div><h3>{title}</h3><p>{description}</p></article>)}</div>
+        </div>
+      </section>
       <section className="events section-pad" id="events"><div className="page-wrap"><div className="section-kicker"><span>ON THE CALENDAR</span><span className="kicker-line" /></div>
         <div className="section-heading-row events-heading"><div><p className="eyebrow">Make room for a new idea</p><h2 className="section-title">Coming <em>into focus.</em></h2></div><span className="mono-label">UP NEXT / 2026</span></div>
         <div className="event-list">{orderedEvents.map((event) => <article className="event-row" key={event.id} onClick={() => setSelectedEvent(event)}>
