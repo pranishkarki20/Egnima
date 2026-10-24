@@ -10,6 +10,25 @@ const navItems = [{ label: "About", href: "#about" }, { label: "What We Do", hre
 const whatWeDoItems = [{ number: "01", title: "Tech Competitions", icon: Braces, description: "Take on technology challenges, collaborate in teams, and turn bold ideas into working projects." }, { number: "02", title: "Workshops", icon: Terminal, description: "Build practical skills through hands-on sessions in software, AI, hardware, and creative technology." }, { number: "03", title: "Seminars", icon: MessageCircle, description: "Explore emerging ideas and career paths through talks and conversations with people in tech." }];
 type PublicEvent = { id: string; title: string; date: string; location: string; description: string; image: string; link: string };
 type PublicMember = { id?: string; name: string; role: string; department: string; description: string; image: string; email?: string; linkedin?: string; github?: string };
+const EVENTS_CACHE_KEY = "enigma-events-v1";
+const TEAM_CACHE_KEY = "enigma-team-v1";
+function readCachedList<T>(key: string): T[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const cached: unknown = JSON.parse(localStorage.getItem(key) || "null");
+    return Array.isArray(cached) ? cached as T[] : [];
+  } catch {
+    return [];
+  }
+}
+function writeCachedList<T>(key: string, items: T[]) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(key, JSON.stringify(items));
+  } catch {
+    // The live response remains usable when browser storage is unavailable or full.
+  }
+}
 const teamGroups = [{ department: "Core Team", title: "Leads" }, { department: "Technical", title: "Technical Team" }, { department: "Social Media", title: "Social Media" }, { department: "Resource", title: "Resource Team" }, { department: "Operational", title: "Operations Team" }, { department: "Research", title: "Research Team" }];
 const joinLink = "https://chat.whatsapp.com/KUe221OJGsd63Hs5grwUMS";
 const memberBelongsToGroup = (member: PublicMember, department: string) => {
@@ -51,14 +70,22 @@ const memberOrder = (member: PublicMember, department: string) => {
   return 10;
 };
 function Index() {
-  const [events, setEvents] = useState<PublicEvent[]>([]);
+  const [events, setEvents] = useState<PublicEvent[]>(() => readCachedList<PublicEvent>(EVENTS_CACHE_KEY));
   const [selectedEvent, setSelectedEvent] = useState<PublicEvent | null>(null);
-  const [teamMembers, setTeamMembers] = useState<PublicMember[]>([]);
+  const [teamMembers, setTeamMembers] = useState<PublicMember[]>(() => readCachedList<PublicMember>(TEAM_CACHE_KEY));
   const [activeTeam, setActiveTeam] = useState("Core Team");
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
-    apiFetch("/api/events/").then(response => { if (!response.ok) throw new Error("Events unavailable"); return response.json(); }).then(data => setEvents(data.events || [])).catch(() => setEvents([]));
-    apiFetch("/api/team/").then(response => { if (!response.ok) throw new Error("Team roster unavailable"); return response.json(); }).then(data => setTeamMembers(data.members || [])).catch(() => { try { setTeamMembers(JSON.parse(localStorage.getItem("enigma-team-v1") || "[]")); } catch { setTeamMembers([]); } });
+    apiFetch("/api/events/").then(response => { if (!response.ok) throw new Error("Events unavailable"); return response.json(); }).then(data => {
+      const nextEvents: PublicEvent[] = Array.isArray(data.events) ? data.events : [];
+      setEvents(nextEvents);
+      writeCachedList(EVENTS_CACHE_KEY, nextEvents);
+    }).catch(() => setEvents(readCachedList<PublicEvent>(EVENTS_CACHE_KEY)));
+    apiFetch("/api/team/").then(response => { if (!response.ok) throw new Error("Team roster unavailable"); return response.json(); }).then(data => {
+      const nextMembers: PublicMember[] = Array.isArray(data.members) ? data.members : [];
+      setTeamMembers(nextMembers);
+      writeCachedList(TEAM_CACHE_KEY, nextMembers);
+    }).catch(() => setTeamMembers(readCachedList<PublicMember>(TEAM_CACHE_KEY)));
   }, []);
   const now = new Date();
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
@@ -78,10 +105,7 @@ function Index() {
     root.setAttribute("data-motion-ready", "true");
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
+        entry.target.classList.toggle("is-visible", entry.isIntersecting);
       });
     }, { threshold: 0.01, rootMargin: "120px 0px" });
 
@@ -101,7 +125,6 @@ function Index() {
         if (bounds.top < window.innerHeight && bounds.bottom > 0) {
           window.requestAnimationFrame(() => {
             element.classList.add("is-visible");
-            observer.unobserve(element);
           });
         }
       });
@@ -156,7 +179,7 @@ function Index() {
   }, []);
   return <main className="enigma-site">
     <div className="pointer-aura" aria-hidden="true" />
-    <div className="code-language-field" aria-hidden="true">{["TECH COMMUNITY","BUILD TOGETHER","AI / ML","WEB DEVELOPMENT","ROBOTICS","WORKSHOPS","OPEN SOURCE","HACKATHONS","CREATIVE CODING","PROJECT SHOWCASE","LEARN / EXPLORE","ENIGMA CLUB","AI INNOVATION","TECH TALKS","STUDENT BUILDERS","DIGITAL DESIGN","HARDWARE LAB","IDEA TO IMPACT","PEER LEARNING","BUILD / TEST / SHARE"].map((language) => <span className="code-language" key={language}>{language}</span>)}</div>
+    
     <div className="enigma-cursor" aria-hidden="true"><img className="enigma-cursor-logo" src={enigmaLogo} alt="" /></div>
     <a className="skip-link" href="#main-content">Skip to content</a>
     <header className="site-nav"><div className="nav-inner">
@@ -169,10 +192,10 @@ function Index() {
       <button className="menu-toggle" type="button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-navigation" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button>
     </div></header>
     <div id="main-content">
-      <section className="hero" id="home"><div className="hero-grid" aria-hidden="true" /><div className="hero-glow" aria-hidden="true" />
+      <section className="hero" id="home"><div className="hero-grid" aria-hidden="true" /><div className="hero-glow" aria-hidden="true" /><div className="code-language-field" aria-hidden="true">{["TECH COMMUNITY","BUILD TOGETHER","AI / ML","WEB DEVELOPMENT","ROBOTICS","WORKSHOPS","OPEN SOURCE","HACKATHONS","CREATIVE CODING","PROJECT SHOWCASE","LEARN / EXPLORE","ENIGMA CLUB","AI INNOVATION","TECH TALKS","STUDENT BUILDERS","DIGITAL DESIGN","HARDWARE LAB","IDEA TO IMPACT","PEER LEARNING","BUILD / TEST / SHARE"].map((language) => <span className="code-language" key={language}>{language}</span>)}</div>
         <div className="hero-content page-wrap"><div className="hero-copy">
-          <p className="eyebrow"><span className="eyebrow-rule" /> The tech club for the relentlessly curious</p>
-          <h1>Decode ideas.<br /><span className="hero-second"><em>Build</em> the future.</span></h1>
+
+          <h1><span className="hero-headline-line">Decode ideas.</span><br /><span className="hero-second hero-headline-line"><em>Build</em> the future.</span></h1>
           <p className="hero-description">A place to learn out loud, experiment without a map, and build things that reach beyond the classroom.</p>
           <div className="hero-actions"><a className="button button-gold" href={joinLink} target="_blank" rel="noreferrer">Become a Member <ArrowUpRight size={17} /></a><a className="text-link" href="#about">Explore the Club <ArrowDownRight size={16} /></a></div>
           <div className="hero-meta"><span>JAIN UNIVERSITY</span><span className="meta-dot" /><span>EST. FOR THE CURIOUS</span></div>
@@ -220,7 +243,6 @@ function Index() {
     </div>, document.body)}  </main>;
 }
 export default Index;
-
 
 
 

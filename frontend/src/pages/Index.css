@@ -347,6 +347,10 @@
 .enigma-site[data-motion-ready="true"] [data-reveal].is-visible { opacity: 1; transform: translate3d(0,0,0); will-change: auto; }
 .enigma-site[data-motion-ready="true"] [data-reveal="hero-crest"] { transform: translate3d(42px,0,0); }
 .enigma-site[data-motion-ready="true"] [data-reveal="hero-crest"].is-visible { transform: translate3d(0,0,0); }
+.enigma-site[data-motion-ready="true"] [data-reveal="hero-title"].is-visible .hero-headline-line { animation: hero-line-arrive .62s cubic-bezier(.2,.75,.25,1) both; }
+.enigma-site[data-motion-ready="true"] [data-reveal="hero-title"].is-visible .hero-headline-line:first-child { animation-delay: 110ms; }
+.enigma-site[data-motion-ready="true"] [data-reveal="hero-title"].is-visible .hero-headline-line:last-child { animation-delay: 250ms; }
+@keyframes hero-line-arrive { from { opacity: 0; transform: translate3d(0,16px,0); } to { opacity: 1; transform: translate3d(0,0,0); } }
 .enigma-site[data-motion-ready="true"] [data-reveal="about-heading"] { opacity: 1; transform: none; clip-path: inset(0 100% 0 0); transition: clip-path .9s cubic-bezier(.76,0,.24,1); }
 .enigma-site[data-motion-ready="true"] [data-reveal="about-heading"].is-visible { clip-path: inset(0 0 0 0); }
 .enigma-site[data-motion-ready="true"] [data-reveal="about-manifesto"] { transform: translate3d(34px,0,0); }
@@ -424,7 +428,7 @@
 
 @media(prefers-reduced-motion:reduce){.hero::before{transform:none!important;transition:none!important;will-change:auto}}
 /* Slow-moving language labels add a restrained technical texture across the page. */
-.enigma-site > div.code-language-field{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none;opacity:.96;mix-blend-mode:screen}
+.enigma-site .hero > div.code-language-field{position:absolute;z-index:1;inset:0;overflow:hidden;pointer-events:none;opacity:.96;mix-blend-mode:screen}
 .enigma-site .code-language{position:absolute;display:block;color:rgba(226,201,64,.58);font:500 clamp(13px,1.1vw,18px)/1 "DM Mono",monospace;letter-spacing:.12em;text-shadow:0 0 18px rgba(226,201,64,.32);white-space:nowrap;animation:language-drift 28s linear infinite}
 .enigma-site .code-language:nth-child(even){color:rgba(198,190,207,.48);text-shadow:0 0 18px rgba(164,157,172,.29)}
 .enigma-site .code-language:nth-child(1){top:14%;left:6%;animation-duration:25s}
